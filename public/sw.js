@@ -1,12 +1,10 @@
-const CACHE_NAME = "screen-reader-pwa-v4"
+const CACHE_NAME = "screen-reader-pwa-v5"
 const PDFJS_VERSION = "3.11.174"
 const urlsToCache = [
   "/",
   "/manifest.json",
-  "/icon-192x192.png",
-  "/icon-512x512.png",
-  "/pdf-icon.png", // Added for gallery
-  "/docx-icon.png", // Added for gallery
+  "/placeholder-logo.png",
+  "/reader",
   `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS_VERSION}/pdf.min.js`,
   `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS_VERSION}/pdf.worker.min.js`,
 ]
