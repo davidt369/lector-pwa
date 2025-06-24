@@ -3,7 +3,7 @@
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
-import { Button as AriaButton } from "react-aria-components" // Import Button from react-aria-components
+import { Button as AriaButton, ButtonProps as AriaButtonProps } from "react-aria-components" // Import Button from react-aria-components
 
 import { cn } from "@/lib/utils"
 
@@ -34,21 +34,34 @@ const buttonVariants = cva(
 )
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends AriaButtonProps,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button"
+    if (asChild) {
+      const { slot, style, ...slotProps } = props;
+      return (
+        <Slot 
+          className={cn(buttonVariants({ variant, size }), className)}
+          ref={ref}
+          style={typeof style === 'function' ? undefined : style}
+          {...slotProps}
+        >
+          {typeof props.children === 'function' ? props.children({} as any) : props.children}
+        </Slot>
+      )
+    }
+    
     return (
-      <AriaButton // Use AriaButton here
+      <AriaButton // Use AriaButton here - it already renders as a button
         className={cn(buttonVariants({ variant, size }), className)}
         ref={ref}
         {...props}
       >
-        <Comp>{props.children}</Comp>
+        {props.children}
       </AriaButton>
     )
   },
